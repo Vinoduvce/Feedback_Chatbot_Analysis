@@ -112,7 +112,29 @@ class Chatbot:
         except Exception as e:
             print(f"Error in chatbot function: {e}")
             return "Error in generating response"
+
     
+    def feedback_response_generation(self):
+        messages=[
+            {"role":"system","content":f"Generate response to feedback received from user based on {self.responses}"},
+            {"role":"user","content":""}
+        ]
+        try:
+            prompt="\n".join([f"{message['role']}:{message['content']}" for message in messages])
+            llm=Ollama(model='llama3')
+            response=llm.generate([prompt])
+
+            if response.generations and response.generations[0]:
+                reply=response.generations[0][0].text
+            else:
+                reply="response is not generated"
+
+            return reply
+
+        except Exception as e:
+            print(f"Error in chatbot function: {e}")
+            return "Error in generating response"
+
 
 # Handling chatbot
     def handle_input(self, user_input):
@@ -183,7 +205,7 @@ class Chatbot:
 
             else:
                 self.state = 'initial'
-                return "Thank you for answering all the questions. The feedback process is complete."
+                return "Thank you for answering all the questions. The feedback process is complete. And Here is response to your feedback: "+self.feedback_response_generation()
            
 
 
