@@ -113,7 +113,7 @@ class Chatbot:
             print(f"Error in chatbot function: {e}")
             return "Error in generating response"
 
-    
+#Generate response to user feedback 
     def feedback_response_generation(self):
         messages=[
             {"role":"system","content":f"Generate response to feedback received from user based on {self.responses}"},

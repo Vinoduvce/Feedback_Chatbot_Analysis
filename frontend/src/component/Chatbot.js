@@ -27,12 +27,12 @@ const Chatbot = () => {
 
         // recieve message every start page
         ws.onmessage = (e) => {
-          const data = { message: e.data };
+          const data = { message: e.data, type:'received' };
           setMessages((prevMessages) => [...prevMessages, data]);
         };
     
         setWebsckt(ws);
-            //clean up function when we close page
+            
             return () => ws.close();
           }, []);
 
@@ -40,7 +40,7 @@ const Chatbot = () => {
     
     // recieve message every send message
     if (input.trim() !== '') {
-      const newMessage = { message: input };
+      const newMessage = { message: input,type:'sent' };
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       
       if(websckt){
@@ -60,7 +60,7 @@ const Chatbot = () => {
       </div>
       <div className="chatbot-messages">
         {messages.map((msg, index) => (
-          <div key={index} className="chatbot-message">
+          <div key={index} className={`chatbot-message ${msg.type}`}>
             {msg.message}
           </div>
         ))}
